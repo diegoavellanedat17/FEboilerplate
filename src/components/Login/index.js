@@ -2,8 +2,12 @@ import './Login.css'
 import { Form, Container, Button, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { loginRequest } from '../../slices'
 
 const Login = () => {
+  const dispatch = useDispatch()
+
   const [emailValue, setEmailValue] = React.useState('')
   const [passwordValue, setPasswordValue] = React.useState('')
 
@@ -12,6 +16,9 @@ const Login = () => {
     console.log('email:', emailValue)
     // eslint-disable-next-line
     console.log('password:', passwordValue)
+
+    dispatch(loginRequest({ email: emailValue, password: passwordValue }))
+    console.log('formulario enviado ')
   }
 
   return (
