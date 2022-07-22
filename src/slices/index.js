@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  user: {}
+  user: {},
+  loadingUser: true
 }
 
 export const authSlice = createSlice({
@@ -9,11 +10,17 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     map: (state) => state,
-    loginRequest: (state, action) => {
-      return { ...state, user: action.payload }
+    isUser: (state, action) => {
+      return {
+        ...state,
+        user: action.payload,
+        // eslint-disable-next-line
+        loadingUser: action.payload ? false : true
+      }
     }
   }
 })
 
-export const { map, loginRequest } = authSlice.actions
+// export const { map, loginRequest, registerRequest } = authSlice.actions
+export const { map, isUser } = authSlice.actions
 export default authSlice.reducer

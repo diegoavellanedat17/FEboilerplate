@@ -10,6 +10,7 @@ import authReducer from './slices'
 const store = configureStore({ reducer: { authSlice: authReducer } })
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
+
 root.render(
   <Provider store={store}>
     <BrowserRouter>

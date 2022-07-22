@@ -1,4 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&subset=devanagari,latin-ext');
 
+body{
+	font-family: 'Poppins', sans-serif;	
+}
+/* 
 body {
 	background: linear-gradient(-45deg, #ee7752, #3eea77, #23a6d5, #23d5ab);
 	background-size: 400% 400%;
@@ -17,5 +22,5 @@ body {
 		background-position: 0% 50%;
 	}
 }
-
+ */
 

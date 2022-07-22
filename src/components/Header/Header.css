@@ -1,0 +1,6 @@
+.main-navbar{
+    opacity: 0.3;
+}
+.main-navbar:hover{
+    opacity:1;
+}
