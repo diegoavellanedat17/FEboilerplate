@@ -6,7 +6,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 // import { loginRequest } from '../../slices'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'
 import { auth } from '../../firebase'
 
 const Login = () => {
@@ -25,6 +25,12 @@ const Login = () => {
     console.log(firebaseUser)
     // dispatch(loginRequest({ email: emailValue, password: passwordValue }))
     navigate('/user', { replace: true })
+  }
+
+  const onReset = async () => {
+    console.log('password reset')
+    const resetResponse = await sendPasswordResetEmail(auth, emailValue)
+    console.log(resetResponse)
   }
 
   return (
@@ -63,6 +69,10 @@ const Login = () => {
             </Form.Group>
             <Button variant="primary" onClick={onLogin}>
               Login
+            </Button>
+
+            <Button variant="secondary" onClick={onReset}>
+              Reset Password
             </Button>
           </Form>
         </Col>

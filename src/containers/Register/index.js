@@ -6,7 +6,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 // import { registerRequest } from '../../slices'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
 import { auth } from '../../firebase'
 
 const Login = () => {
@@ -25,6 +25,8 @@ const Login = () => {
     console.log('password:', passwordValue)
     try {
       await createUserWithEmailAndPassword(auth, emailValue, passwordValue)
+      console.log(auth)
+      await sendEmailVerification(auth)
       // dispatch(registerRequest({ email: emailValue, password: passwordValue, name: nameValue }))
       navigate('/user', { replace: true })
     } catch (error) {
