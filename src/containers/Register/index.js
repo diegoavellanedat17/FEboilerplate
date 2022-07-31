@@ -11,7 +11,6 @@ import { auth } from '../../firebase'
 
 const Login = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
 
   const [emailValue, setEmailValue] = React.useState('')
   const [nameValue, setNameValue] = React.useState('')

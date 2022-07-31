@@ -1,16 +1,17 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Button, InputGroup, Form, Container, Row, Col } from 'react-bootstrap'
 import { signOut } from 'firebase/auth'
 import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import { FaBeer, FaRegClock } from 'react-icons/fa'
-
+import { userDevices } from '../../slices'
 import Header from '../../components/Header'
 import Devices from '../../components/Devices'
 import { auth, db } from '../../firebase'
 
 const UserDashboard = () => {
+  const dispatch = useDispatch()
   const user = useSelector((state) => state.authSlice.user)
   const [documentState, setDocumentState] = React.useState(true)
   const [documentInfo, setDocumentInfo] = React.useState('')
@@ -20,6 +21,7 @@ const UserDashboard = () => {
     datos.forEach(async (item) => {
       await deleteDoc(doc(db, 'devices', item.id))
     })
+    dispatch(userDevices([]))
   }
 
   const onLogout = async () => {
@@ -31,7 +33,6 @@ const UserDashboard = () => {
     if (!documentInfo) {
       throw new Error('dont save empty values')
     }
-    console.log('la document info', documentInfo)
     const devices = collection(db, 'devices')
     try {
       await addDoc(devices, {
