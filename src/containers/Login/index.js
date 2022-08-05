@@ -1,9 +1,9 @@
 /* eslint-disable */
 import './Login.css'
-import { Form, Container, Button, Row, Col } from 'react-bootstrap'
+import { Form, Container, Button, Row, Col, Spinner } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 // import { loginRequest } from '../../slices'
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'
@@ -12,6 +12,9 @@ import { auth } from '../../firebase'
 const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const user = useSelector((state) => state.authSlice.user)
+  const loading = useSelector((state) => state.authSlice.loadingUser)
 
   const [emailValue, setEmailValue] = React.useState('')
   const [passwordValue, setPasswordValue] = React.useState('')
@@ -22,9 +25,15 @@ const Login = () => {
     // eslint-disable-next-line
     console.log('password:', passwordValue)
     const firebaseUser = await signInWithEmailAndPassword(auth, emailValue, passwordValue)
-    console.log(firebaseUser)
+
+    if (loading) return <Spinner animation="grow" />
+
+    // if (Object.keys(user).length === 0) return <Navigate to="/login" />
+    // if (user.role) {
+    //   return navigate('/user', { replace: true })
+    // }
+
     // dispatch(loginRequest({ email: emailValue, password: passwordValue }))
-    navigate('/user', { replace: true })
   }
 
   const onReset = async () => {

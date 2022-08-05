@@ -7,20 +7,13 @@ import { Spinner } from 'react-bootstrap'
 import { userDevices } from '../../slices'
 import Device from '../Device'
 import { db } from '../../firebase'
-import { clearConfigCache } from 'prettier'
 
 const Devices = () => {
   const dispatch = useDispatch()
   const getUserDevices = useSelector((state) => state.authSlice.devices)
-
-  console.log('esto se renderiza cada rato')
-
   const [devicesLoader, setDevicesLoader] = React.useState(true)
-  const [getDevices, setGetDevices] = React.useState(null)
   const [changes, setChanges] = React.useState(null)
-
   useEffect(() => {
-    console.log('el initial state', getUserDevices)
     const getData = async () => {
       const dataGet = []
       // Only run the first render
@@ -30,7 +23,6 @@ const Devices = () => {
       })
 
       setDevicesLoader(false)
-      setGetDevices(dataGet)
       dispatch(userDevices(dataGet))
       return dataGet
     }
@@ -38,7 +30,6 @@ const Devices = () => {
     if (getUserDevices.length === 0) {
       getData()
     } else {
-      console.log('entra aca 1')
       let update = false
       const updatedDevices = getUserDevices.map((obj) => {
         if (obj.id === changes.id) {
@@ -48,17 +39,15 @@ const Devices = () => {
         return obj
       })
       if (!update) {
-        console.log('entra aca 2')
         updatedDevices.push(changes)
       }
-      setGetDevices(updatedDevices)
       dispatch(userDevices(updatedDevices))
     }
   }, [changes])
 
   useEffect(() => {
     const realTimeDataQuery = query(collection(db, 'devices'))
-    onSnapshot(realTimeDataQuery, (querySnaphot) => {
+    const unsubscribeDevices = onSnapshot(realTimeDataQuery, (querySnaphot) => {
       querySnaphot.docChanges().forEach((change) => {
         setChanges({ ...change.doc.data(), id: change.doc.id })
       })
@@ -72,7 +61,11 @@ const Devices = () => {
         ) : getUserDevices.length === 0 ? (
           <h1>Esta vacio</h1>
         ) : (
-          getUserDevices.map((device) => <Device name={device.name} />)
+          getUserDevices.map((device) => (
+            <Col xs={6} md={3} key={device.id}>
+              <Device name={device.name} status={device.status} />
+            </Col>
+          ))
         )}
       </Row>
     </>

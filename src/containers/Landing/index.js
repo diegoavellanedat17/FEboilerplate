@@ -7,7 +7,6 @@ import Header from '../../components/Header'
 
 const Landing = () => {
   const [rotate, setRotate] = React.useState(false)
-  console.log(setRotate)
   return (
     <>
       <Header />
@@ -23,7 +22,6 @@ const Landing = () => {
           className="animate-test"
           onClick={() => {
             setRotate(!rotate)
-            console.log('click')
           }}
         >
           test

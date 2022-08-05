@@ -3,11 +3,12 @@ import './Login.css'
 import { Form, Container, Button, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react'
+import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 // import { registerRequest } from '../../slices'
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
-import { auth } from '../../firebase'
+import { auth, db } from '../../firebase'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -24,9 +25,19 @@ const Login = () => {
     console.log('password:', passwordValue)
     try {
       await createUserWithEmailAndPassword(auth, emailValue, passwordValue)
-      console.log(auth)
-      await sendEmailVerification(auth)
+      //await sendEmailVerification(auth)
       // dispatch(registerRequest({ email: emailValue, password: passwordValue, name: nameValue }))
+      const users = collection(db, 'users')
+      try {
+        await addDoc(users, {
+          email: emailValue,
+          role: 'user',
+          uid: auth.currentUser.uid,
+          devices: []
+        })
+      } catch (error) {
+        console.error('Error adding document: ', error)
+      }
       navigate('/user', { replace: true })
     } catch (error) {
       setError(error.message)

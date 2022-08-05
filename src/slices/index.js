@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   user: {},
   loadingUser: true,
-  devices: []
+  devices: [],
+  subscriptions: []
 }
 
 export const authSlice = createSlice({
@@ -20,15 +21,21 @@ export const authSlice = createSlice({
       }
     },
     userDevices: (state, action) => {
-      console.log('se corre el dispatcher con ', action.payload)
       return {
         ...state,
         devices: action.payload
+      }
+    },
+    setInitialState: (state) => {
+      return {
+        ...state,
+        loadingUser: true,
+        devices: []
       }
     }
   }
 })
 
 // export const { map, loginRequest, registerRequest } = authSlice.actions
-export const { map, isUser, userDevices } = authSlice.actions
+export const { map, isUser, userDevices, setInitialState } = authSlice.actions
 export default authSlice.reducer
